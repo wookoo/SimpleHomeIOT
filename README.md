@@ -4,27 +4,35 @@
 
 라즈베리 파이 등을 중간 서버로 사용한 아두이노, Nodemcu, 아이폰의 Siri (혹은 빅스비)를 이용한 홈 IOT 입니다.
 
-##중요사항
+## 중요사항
 
-모든 장비는 동일한 내부 IP 에 연결되어있어야 합니다. 외부와 통신되는 장비는
+모든 장비는 동일한 내부 IP 에 연결되어있어야 합니다. 외부와 통신되는 장비(포트포워딩)는 라즈베리 파이와 같이 서버컴퓨터 한대 뿐입니다.
 
 ## 구현된 기능
 
 구현된 기능은 다음과 같습니다.
 
-- Siri를 사용한 컴퓨터 전원 켜기 (WOL 기능 사용) [[파이썬 소스]()]
-- Siri와 Nodemcu 사용한 컴퓨터 전원 켜기 , 끄기 (물리적인 릴레이 스위치 사용) [아두이노 소스]
-- Siri와 Nodemcu, 릴레이를 사용한 전등 제어 [[파이썬 소스]()][[아두이노 소스](https://github.com/wookoo/SimpleHomeIOT/blob/master/DeviceSource/LightSwitch/LightSwitch.ino)]
+- Siri를 사용한 컴퓨터 전원 켜기 (WOL 기능 사용) [[파이썬 소스](https://github.com/wookoo/SimpleHomeIOT/blob/master/RestServer/app/views.py#L15)]
+- Siri와 Nodemcu 를 사용한 컴퓨터 전원 켜기 , 끄기 (물리적인 릴레이 스위치 사용) [[파이썬 소스](https://github.com/wookoo/SimpleHomeIOT/blob/master/RestServer/app/views.py#L48)][[아두이노 소스]("https://github.com/wookoo/SimpleHomeIOT/blob/master/DeviceSource/ComputerTrigger/ComputerTrigger.ino")]
+- Siri와 Nodemcu, 릴레이를 사용한 전등 제어 [[파이썬 소스](https://github.com/wookoo/SimpleHomeIOT/blob/master/RestServer/app/views.py#L67)] [[아두이노 소스](https://github.com/wookoo/SimpleHomeIOT/blob/master/DeviceSource/LightSwitch/LightSwitch.ino)]
 
-**siri 를 사용 할 필요 없이 서버 수정을 조금만 하면 웹으로도 가능합니다**
-
+~~~
+siri 를 사용 할 필요 없이 서버 수정을 조금만 하면 웹으로도 가능합니다.
+~~~
 
 ### 서버 컴퓨터 사전 설정
 
-작성중
+설치 필요 모듈은 다음과 같습니다.
+
+- django2.0
+- request
+
+공유기 설정에서, 라즈베리파이의 django에서 사용할 포트포워딩을 진행하셔야합니다.
+
+**보안에 신경쓰시는분들은 라즈베리 파이를 포트포워딩으로 물리지 마시고, 내부 망에서 사용하십시오!**
 
 
-###WOL 설정
+### WOL 설정
 
 구현 기능의 WOL 기능을 사용하여 컴퓨터의 전원을 키기 위해선 WOL 설정을 해야 합니다.
 
