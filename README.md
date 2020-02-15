@@ -10,7 +10,9 @@
 
 - Siri를 사용한 컴퓨터 전원 켜기 (WOL 기능 사용) [[파이썬 소스](https://github.com/wookoo/SimpleHomeIOT/blob/master/RestServer/app/views.py#L15)]
 - Siri와 Nodemcu 를 사용한 컴퓨터 전원 켜기 , 끄기 (물리적인 릴레이 스위치 사용) [[파이썬 소스](https://github.com/wookoo/SimpleHomeIOT/blob/master/RestServer/app/views.py#L48)][[아두이노 소스]("https://github.com/wookoo/SimpleHomeIOT/blob/master/DeviceSource/ComputerTrigger/ComputerTrigger.ino")]
+	- 해당 방식은 컴퓨터 전원버튼 개조가 필요합니다.
 - Siri와 Nodemcu, 릴레이를 사용한 전등 제어 [[파이썬 소스](https://github.com/wookoo/SimpleHomeIOT/blob/master/RestServer/app/views.py#L67)] [[아두이노 소스](https://github.com/wookoo/SimpleHomeIOT/blob/master/DeviceSource/LightSwitch/LightSwitch.ino)]
+	- 해당 방식은 벽스위치를 제거 하고, 릴레이 스위치를 달아야 합니다.
 
 ~~~
 siri 를 사용 할 필요 없이 서버 수정을 조금만 하면 웹으로도 가능합니다.
@@ -50,10 +52,58 @@ siri 를 사용 할 필요 없이 서버 수정을 조금만 하면 웹으로도
 - 현재 사용할 수 없는 설정 변경을 누르고, 빠른 시작 켜기 및 최대 절전 모드를 체크 해제 한 후 저장합니다.
 - cmd 를 실행 시키고 ipconfig /all  을 타이핑 하여 IPv4 주소, 물리적주소 (MAC) 주소를 메모해 놓습니다.
 
+### 실행방법
+
+터미널에서 다음 명령어를 입력하여 실행하세요.
+~~~
+python3 manage.py runserver 0.0.0.0:포트번호
+~~~
+
 ### 중요사항
 
 모든 장비는 동일한 내부 IP 에 연결되어있어야 합니다.
 
 외부와 통신되는 장비(포트포워딩)는 라즈베리 파이와 같이 서버컴퓨터 한대 뿐입니다.
 
+
+
 <hr>
+
+## 서버 요청 방법
+
+해당 부분에선 서버에 요청 방법을 기술해놨습니다.
+
+### 컴퓨터 전원키기 WOL 요청 방법
+
+~~~
+curl -X POST http://서버주소:포트번호/computer/
+	-d "{"user":${USERNAME}}"
+~~~
+
+body 에 user 정보를 json 형식으로 담아 전송해주세요. 문제가 없으면 {"response":"success"} 를
+
+문제가 있으면 {"response":"fail"}을 반환합니다.
+
+### 컴퓨터 전원 키기 물리적 요청 방법
+
+~~~
+curl -X POST http://서버주소:포트번호/computer_phy/
+	-d "{"user":${USERNAME}}"
+~~~
+body 에 user 정보를 json 형식으로 담아 전송해주세요. 문제가 없으면 {"response":"success"} 를
+
+문제가 있으면 {"response":"fail"}을 반환합니다.
+
+컴퓨터가 켜져있을떄 해당 요청을 보내면, 컴퓨터가 꺼집니다. 꺼져있을때 해당 요청을 보내면, 전원이 켜집니다.
+
+### 전등 켜기 요청 방법
+
+~~~
+curl -X POST http://서버주소:포트번호/roomlight/{on/off}/
+	-d "{"user":${USERNAME}}"
+~~~
+body 에 user 정보를 json 형식으로 담아 전송해주세요. 문제가 없으면 {"response":"success"} 를
+
+문제가 있으면 {"response":"fail"}을 반환합니다.
+
+맨 뒤 링크에서 on 을 보내면 전원이 켜지고, off 를 보내면 전원이 꺼집니다.
