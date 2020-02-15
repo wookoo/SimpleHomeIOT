@@ -66,13 +66,18 @@ ROOM_LIGHT_SWITCH_IP = "http://172.30.1.98/" ## DeviceSource/LightSwitch.ino 파
 @csrf_exempt
 def room(request,switch):
 
-    if (switch == "on"):
-        requests.get(ROOM_LIGHT_SWITCH_IP+"on")
-    else:
-        requests.get(ROOM_LIGHT_SWITCH_IP+"off")
+    if(request.method == "POST"):
+        json_str = (request.body).decode('utf-8')
+        received_json = json.loads(json_str)
+        try:
+            user = received_json["user"]
+            if user == USER_NAME:
+                requests.get(PHYSIC_SWITCH_IP+switch)
+                return JsonResponse({"response":"success"},json_dumps_params = {'ensure_ascii':False})
+        except:
+            pass
 
-    return JsonResponse({"response":"success"},json_dumps_params = {'ensure_ascii':False})
-
+    return JsonResponse({"response":"fail"},json_dumps_params = {'ensure_ascii':False})
 
 
 
