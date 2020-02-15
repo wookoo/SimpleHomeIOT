@@ -19,14 +19,9 @@ from django.urls import path
 #from django.contrib import admin
 from app import views
 
-#urlpatterns = [
-#    path('admin/', admin.site.urls),
-#    url(r'^admin/', admin.site.urls),
-#    url(r'^keyboard', views.keyboard),
-#    url(r'^myroom', views.room)
-#]
 urlpatterns = [
-    path('myroom/<str:switch>/', views.room),
+    path('roomlight/<str:switch>/', views.room),
     path('computer/', views.computer),
+    path('computer_phy/computer_physic', views.computer),
     path('test/',views.message),
 ]
